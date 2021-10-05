@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {RoomContext} from "../context";
-//тестовый комит с новым емаилом
+//тестовый комит с новым емаилом https://youtu.be/LXJOvkVYQqA?t=6800
 class FeaturedRooms extends Component {
     static contextType = RoomContext
 
