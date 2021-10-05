@@ -1,7 +1,7 @@
 import Hero from "../components/Hero";
 import Banner from "../components/Banner";
 import {Link} from 'react-router-dom'
-function Rooms() {
+function Room() {
     return <Hero hero="roomsHero">
         <Banner title='our rooms'>
             <Link to='/' className='btn-primary'>
@@ -12,4 +12,4 @@ function Rooms() {
     </Hero>
 }
 
-export default Rooms;
+export default Room;
