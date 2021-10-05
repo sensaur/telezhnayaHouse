@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {RoomContext} from "../context";
-
+//тестовый комит с новым емаилом
 class FeaturedRooms extends Component {
     static contextType = RoomContext
 
