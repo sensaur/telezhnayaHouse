@@ -6,9 +6,6 @@ import {RoomProvider} from './context'
 
 import {
     BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
 } from "react-router-dom";
 
 ReactDOM.render(

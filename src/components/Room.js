@@ -1,7 +1,8 @@
 import {Link} from "react-router-dom";
+import PropTypes from "prop-types";
 
 function Room({room}) {
-    console.log(room)
+    // console.log(room)
     const {name, slug, images, price,} = room
     return (
         <article className="room">
@@ -15,8 +16,20 @@ function Room({room}) {
                     Features
                 </Link>
             </div>
+            <p className="room-info">{name}</p>
         </article>
     );
 }
 
 export default Room;
+
+Room.propTypes = {
+    room: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        slug: PropTypes.string.isRequired,
+        images: PropTypes.arrayOf(PropTypes.string).isRequired,
+        price: PropTypes.number.isRequired,
+    })
+}
+
+//https://youtu.be/LXJOvkVYQqA?t=9085
