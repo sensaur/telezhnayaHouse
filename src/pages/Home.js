@@ -17,7 +17,7 @@ function Home() {
                 </Banner>
             </Hero>
             <Services/>
-            <FeaturedRooms/>
+            <FeaturedRooms  />
         </>
     )
 }

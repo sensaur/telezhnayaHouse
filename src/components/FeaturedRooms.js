@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
-//https://youtu.be/LXJOvkVYQqA?t=6196
+import {RoomContext} from "../context";
 
 class FeaturedRooms extends Component {
+    static contextType = RoomContext
+
     render() {
+        const {name, greeting} = this.context;
         return (
             <div>
-                hello from Featured rooms
+                {greeting} from {name} Featured rooms
             </div>
         );
     }
