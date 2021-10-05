@@ -17,7 +17,7 @@ class NavBar extends Component {
                 <div className="nav-center">
                     <div className="nav-header">
                         <Link to="/">
-                            <img src={logo} alt="TeleznayaHotel"/>
+                            <img src={logo} alt="Тележная House"/>
                         </Link>
                         <button type="button" className="nav-btn" onClick={this.handleToggle}>
                             <FaAlignRight className="nav-icon"/>
