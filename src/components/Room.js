@@ -33,3 +33,4 @@ Room.propTypes = {
 }
 
 //https://youtu.be/LXJOvkVYQqA?t=9085
+//тест
