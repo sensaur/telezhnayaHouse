@@ -32,5 +32,5 @@ Room.propTypes = {
     })
 }
 
-//https://youtu.be/LXJOvkVYQqA?t=10555
+//https://youtu.be/LXJOvkVYQqA?t=12401
 //тест
