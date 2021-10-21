@@ -8,12 +8,14 @@ function RoomList({rooms}) {
             </h3>
         </div>
     }
-
-
     return (
-        <div>
-            Hello from room list
-        </div>
+        <section className="roomslist">
+            <div className='roomslist-center'>
+                {rooms.map(item => {
+                    return <Room key={item.id} room={item}/>
+                })}
+            </div>
+        </section>
     );
 }
 
