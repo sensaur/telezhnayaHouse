@@ -9,6 +9,14 @@ class RoomProvider extends Component {
         sortedRooms: [],
         featuredRooms: [],
         loading: true,
+        type: "all",
+        capacity: 1,
+        minPrice: 0,
+        maxPrice: 0,
+        minSize: 0,
+        maxSize: 0,
+        breakfast: false,
+        pets: false,
     }
 
 //getData
@@ -16,11 +24,17 @@ class RoomProvider extends Component {
     componentDidMount() {
         let rooms = this.formatData(items)
         let featuredRooms = rooms.filter(room => room.featured === true)
+        let maxPrice = Math.max(...rooms.map(item => item.price))
+        let maxSize = Math.max(...rooms.map(item => item.price))
         this.setState({
             rooms,
             featuredRooms,
             sortedRooms: rooms,
             loading: false,
+            price: maxPrice,
+            maxSize,
+            maxPrice,
+
         })
     }
 
@@ -40,9 +54,21 @@ class RoomProvider extends Component {
         return room
     }
 
+    handleChange = event => {
+        const type = event.target.type
+        const name = event.target.name
+        const value = event.target.value
+        console.log(type, name, value)
+
+    }
+
+    filterRooms = () => {
+        console.log("hello")
+    }
+
     render() {
         return (
-            <RoomContext.Provider value={{...this.state, getRoom: this.getRoom}}>
+            <RoomContext.Provider value={{...this.state, getRoom: this.getRoom, handleChanhe: this.handleChange}}>
                 {this.props.children}
             </RoomContext.Provider>
         );
