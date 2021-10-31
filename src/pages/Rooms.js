@@ -10,7 +10,7 @@ function Room() {
             <Hero hero="roomsHero">
                 <Banner title='our rooms'>
                     <Link to='/' className='btn-primary'>
-                        вернуться на главную
+                        НА ГЛАВНУЮ
                     </Link>
                 </Banner>
             </Hero>

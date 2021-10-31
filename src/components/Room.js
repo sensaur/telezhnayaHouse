@@ -13,7 +13,7 @@ function Room({room}) {
                     <p>per night</p>
                 </div>
                 <Link to={`/rooms/${slug}`} className="btn-primary room-link">
-                    Features
+                    ИНФО
                 </Link>
             </div>
             <p className="room-info">{name}</p>
