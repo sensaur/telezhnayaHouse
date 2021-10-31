@@ -8,7 +8,7 @@ function Room() {
     return (
         <>
             <Hero hero="roomsHero">
-                <Banner title='our rooms'>
+                <Banner title='комнаты'>
                     <Link to='/' className='btn-primary'>
                         НА ГЛАВНУЮ
                     </Link>
