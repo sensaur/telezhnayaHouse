@@ -9,8 +9,8 @@ function Home() {
         <>
             <Hero hero="defaultHero">
                 <Banner
-                    title="Скоро открытие"
-                    subtitle="уютные номера от 2500₽">
+                    title="Открытие с 1 декабря"
+                    subtitle="уютные номера от 1650₽">
                     <Link to="/rooms" className="btn-primary">
                         номера
                     </Link>

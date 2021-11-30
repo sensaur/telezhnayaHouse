@@ -30,6 +30,9 @@ class NavBar extends Component {
                         <li>
                             <Link to="/rooms">Номера</Link>
                         </li>
+                        <li>
+                            <a href="tel:+79110202097">+7 (911) 020-20-97</a>
+                        </li>
                     </ul>
                 </div>
             </nav>

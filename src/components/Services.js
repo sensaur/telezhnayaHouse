@@ -32,7 +32,7 @@ class Services extends Component {
         return (
             <>
                 <section className='services'>
-                    <Title title='services' />
+                    <Title title='услуги' />
                 <div className='services-center'>
                     {this.state.services.map((item, index) => {
                         return <article key={index} className="service">
