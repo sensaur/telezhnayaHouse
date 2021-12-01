@@ -22,7 +22,7 @@ function RoomFilter({rooms}) {
     })
     return (
         <section className='filter-container'>
-            <Title title="search rooms"/>
+            <Title title="поиск комнат"/>
             <form className="filter-form">
                 {/*select type*/}
                 <div className="form-group">

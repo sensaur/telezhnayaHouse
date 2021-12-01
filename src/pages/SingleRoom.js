@@ -38,7 +38,7 @@ class SingleRoom extends Component {
             <>
                 <StyledHero img={images[0] || this.state.defaultBCG}>
                     <Banner title={`${name} room`}>
-                        <Link to='/rooms' className='btn-primary'>back to rooms</Link>
+                        <Link to='/rooms' className='btn-primary'>к номерам</Link>
                     </Banner>
                 </StyledHero>
                 <section className='single-room'>
