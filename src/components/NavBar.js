@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import logo from '../images/logo.svg'
-import {FaAlignRight} from "react-icons/all";
+import {FaAlignRight, FaTelegramPlane, FaEnvelope} from "react-icons/all";
 import {Link} from 'react-router-dom'
 
 class NavBar extends Component {
@@ -28,11 +28,22 @@ class NavBar extends Component {
                             <Link to="/">Главная</Link>
                         </li>
                         <li>
+                            <a href="tel:+79110202097">+7 (911) 020-20-97</a>
+                        </li>
+                        <li>
                             <Link to="/rooms">Номера</Link>
                         </li>
                         <li>
-                            <a href="tel:+79110202097">+7 (911) 020-20-97</a>
+                            <a href="https://telegram.me/Telezhnaya_house">
+                                <FaTelegramPlane/>
+                            </a>
                         </li>
+                        <li>
+                            <a href="mailto:user@domain.com?Subject=Hello%20User">
+                                <FaEnvelope/>
+                            </a>
+                        </li>
+
                     </ul>
                 </div>
             </nav>
