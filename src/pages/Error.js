@@ -5,9 +5,9 @@ import {Link} from 'react-router-dom'
 function Error() {
     return (
         <Hero>
-            <Banner title='404' subtitle="page not found">
+            <Banner title='404' subtitle="страница не найдена">
                 <Link to='/' className='btn-primary'>
-                    return home
+                    назад
                 </Link>
             </Banner>
         </Hero>
