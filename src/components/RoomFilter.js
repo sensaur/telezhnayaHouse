@@ -12,7 +12,7 @@ function RoomFilter({rooms}) {
     const context = useContext(RoomContext);
     const {handleChange, type, capacity, price, minPrice, maxPrice, minSize, maxSize, breakfast, pets} = context;
     let types = getUnique(rooms, 'type')
-    types = ['all', ...types]
+    types = ['все', ...types]
     types = types.map((item, index) => {
         return <option value={item} key={index}>{item}</option>
     })
