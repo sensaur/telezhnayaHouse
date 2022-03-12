@@ -37,7 +37,7 @@ class SingleRoom extends Component {
         return (
             <>
                 <StyledHero img={images[0] || this.state.defaultBCG}>
-                    <Banner title={`${name} room`}>
+                    <Banner title={`${name}`}>
                         <Link to='/rooms' className='btn-primary'>к номерам</Link>
                     </Banner>
                 </StyledHero>
@@ -54,13 +54,13 @@ class SingleRoom extends Component {
                         </article>
                         <article className="info">
                             <h3>информация</h3>
-                            <h6>цена : ${price}</h6>
+                            <h6>цена :  {price} ₽</h6>
                             <h6>площадь : {size} м2</h6>
                             <h6>вместимость : {
                                 capacity > 1 ? `${capacity} человек` : `${capacity} человек`
                             }
                             </h6>
-                            <h6>{pets ? "домашние животные" : "домашние животные не разрешены"}</h6>
+                            {/*<h6>{pets ? "домашние животные" : "домашние животные не разрешены"}</h6>*/}
                             <h6>{breakfast && "завтрак включен"}</h6>
                         </article>
                     </div>
