@@ -22,11 +22,11 @@ function RoomFilter({rooms}) {
     })
     return (
         <section className='filter-container'>
-            <Title title="поиск комнат"/>
+            <Title title="поиск"/>
             <form className="filter-form">
                 {/*select type*/}
                 <div className="form-group">
-                    <label htmlFor="type">room type</label>
+                    <label htmlFor="type">тип</label>
                     <select name='type' id='type' value={type} className="form-control" onChange={handleChange}>
                         {types}
                     </select>
@@ -34,7 +34,7 @@ function RoomFilter({rooms}) {
                 {/*end select type*/}
                 {/*select guest*/}
                 <div className="form-group">
-                    <label htmlFor="capacity">Guests</label>
+                    <label htmlFor="capacity">гостей</label>
                     <select name='capacity' id='capacity' value={capacity} className="form-control"
                             onChange={handleChange}>
                         {people}
@@ -44,7 +44,7 @@ function RoomFilter({rooms}) {
                 {/*room price*/}
                 <div className='form-group'>
                     <label htmlFor='price'>
-                        room price ${price}
+                        цена {price}
                     </label>
                     <input type="range" name='price' min={minPrice} max={maxPrice} id='price' value={price}
                            onChange={handleChange} className='form-control'/>
@@ -52,7 +52,7 @@ function RoomFilter({rooms}) {
                 {/*end room price*/}
                 {/*size*/}
                 <div className='form-group'>
-                    <label htmlFor='size'>room size
+                    <label htmlFor='size'>площадь
                     </label>
                     <input type='number' name='minSize' id='size' value={minSize} onChange={handleChange}
                            className='size-input'/>
@@ -65,12 +65,12 @@ function RoomFilter({rooms}) {
                     <div className='single-extra'>
                         <input type="checkbox" name='breakfast' id='breakfast' checked={breakfast}
                                onChange={handleChange}/>
-                        <label htmlFor='breakfast'>breakfast</label>
+                        <label htmlFor='breakfast'>завтрак</label>
                     </div>
                     <div className='single-extra'>
                         <input type="checkbox" name='pets' id='pets' checked={pets}
                                onChange={handleChange}/>
-                        <label htmlFor='pets'>pets</label>
+                        <label htmlFor='pets'>животные</label>
                     </div>
                 </div>
                 {/*end of extras*/}

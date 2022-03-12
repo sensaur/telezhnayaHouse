@@ -4,7 +4,7 @@ function RoomList({rooms}) {
     if (rooms.length === 0) {
         return <div className="empty-search">
             <h3>
-                Unfortunatelly no rooms matched your search parameters
+                К сожалению по вашим параметрам ничего не найдено
             </h3>
         </div>
     }
