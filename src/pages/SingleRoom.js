@@ -33,7 +33,7 @@ class SingleRoom extends Component {
                 </Link>
             </div>)
         }
-        const {name, description, capacity, size, extras, breakfast, pets, images, price} = room
+        const {name, description, capacity, size, extras, breakfast, images, price} = room
         return (
             <>
                 <StyledHero img={images[0] || this.state.defaultBCG}>
