@@ -54,7 +54,7 @@ class SingleRoom extends Component {
                         </article>
                         <article className="info">
                             <h3>информация</h3>
-                            <h6>цена :  {price} ₽</h6>
+                            <h6>цена :  от {price} ₽</h6>
                             <h6>площадь : {size} м2</h6>
                             <h6>вместимость : {
                                 capacity > 1 ? `${capacity} человек` : `${capacity} человек`
