@@ -24,9 +24,9 @@ class NavBar extends Component {
                         </button>
                     </div>
                     <ul className={this.state.isOpen ? "nav-links show-nav" : "nav-links"}>
-                        <li>
-                            <Link to="/">Главная</Link>
-                        </li>
+                        {/*<li>*/}
+                        {/*    <Link to="/">Главная</Link>*/}
+                        {/*</li>*/}
                         <li>
                             <a href="tel:+79110202097">+7 (911) 020-20-97</a>
                         </li>
@@ -42,6 +42,9 @@ class NavBar extends Component {
                             <a href="mailto:sneg.66s@mail.ru?Subject=Бронирование">
                                 <FaEnvelope/>
                             </a>
+                        </li>
+                        <li>
+                            <Link to="/request">Забронировать</Link>
                         </li>
 
                     </ul>
