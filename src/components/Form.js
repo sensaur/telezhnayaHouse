@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import DatePicker from "react-datepicker";
 import {send} from 'emailjs-com';
 import swal from 'sweetalert';
+import moment from 'moment';
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -21,7 +22,7 @@ function Form() {
         send(
             process.env.REACT_APP_SERVICE_ID,
             process.env.REACT_APP_TEMPLATE_ID,
-            {...toSend, startDate},
+            {...toSend, startDate: `${startDateTrimmed}`},
             process.env.REACT_APP_USER_ID,
         )
             .then((response) => {
@@ -38,6 +39,9 @@ function Form() {
     const handleChange = (e) => {
         setToSend({...toSend, [e.target.name]: e.target.value});
     };
+    const startDateTrimmed = moment(startDate).format("LL")
+    // console.log(startDate)
+    // console.log(startDateTrimmed)
     return (
         <>
             <form onSubmit={onSubmit}>
