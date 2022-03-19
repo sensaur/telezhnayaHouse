@@ -5,9 +5,16 @@ import swal from 'sweetalert';
 import moment from 'moment';
 
 import "react-datepicker/dist/react-datepicker.css";
+// import le from "react-datepicker";
 
 function Form() {
     const [startDate, setStartDate] = useState(new Date());
+    let roomPrice = new Map();
+    roomPrice.set('Номер-студио', 800)
+    roomPrice.set('Апартаменты-студио', 1350)
+    roomPrice.set('Апартаменты', 1750)
+    // console.log(roomPrice.get('Номер-студио'))
+
     const [toSend, setToSend] = useState({
         room_type: '',
         room_quantity: '',
@@ -42,18 +49,32 @@ function Form() {
     const startDateTrimmed = moment(startDate).format("LL")
     // console.log(startDate)
     // console.log(startDateTrimmed)
+    let message = ''
+    if (toSend.room_quantity !== "" & toSend.room_type !== "" & toSend.nights_quantity !== "") {
+        // console.log("выбрано")
+        let messageCount = `Ваше
+                        бронирование: ${toSend.room_quantity} ${toSend.room_type} на ${toSend.nights_quantity} ночь
+                        / ночей стоимость
+                        от ${toSend.room_quantity * toSend.nights_quantity * roomPrice.get(`${toSend.room_type}`)} руб`
+        message = messageCount
+        // return messageCount
+    }
+
     return (
         <>
             <form onSubmit={onSubmit}>
                 <div className="container">
                     <h1 className="d-flex justify-content-center">Заявка</h1>
+                    {/*<p className="d-flex justify-content-center">от {roomPrice.get(`${toSend.room_type}`)} ₽ за ночь</p>*/}
+                    <p className="d-flex justify-content-center">{message}</p>
+                    {/*<h1 className="d-flex justify-content-center">{toSend.room_type}</h1>*/}
                     <select name='room_type' className="form-select my-2" aria-label="Default select example"
                             value={toSend.room_type}
                             onChange={handleChange}>
                         <option selected>Тип комнаты</option>
-                        <option value="Апартаменты">Апартаменты</option>
-                        <option value="Апартаменты-студио">Апартаменты-студио</option>
                         <option value="Номер-студио">Номер-студио</option>
+                        <option value="Апартаменты-студио">Апартаменты-студио</option>
+                        <option value="Апартаменты">Апартаменты</option>
                     </select>
                     <select name='room_quantity' className="form-select my-2" aria-label="Default select example"
                             value={toSend.room_quantity}
@@ -69,13 +90,15 @@ function Form() {
                         <div style={{width: '600px'}}>Дата заезда
                             {/*<DatePicker name="date_arrival" className="form-select my-2" selected={startDate}*/}
                             {/*            onChange={(date) => setStartDate(date)}/>*/}
-                            <DatePicker name="date_arrival" className="form-select my-2" selected={startDate} value={toSend.date_arrival}
+                            <DatePicker name="date_arrival" className="form-select my-2" selected={startDate}
+                                        value={toSend.date_arrival}
                                         onChange={(date) => setStartDate(date)}/>
                         </div>
-                        <select name='nights_quantity' className="form-select my-2 mx-2" aria-label="Default select example"
+                        <select name='nights_quantity' className="form-select my-2 mx-2"
+                                aria-label="Default select example"
                                 value={toSend.nights_quantity}
                                 onChange={handleChange}>>
-                            <option selected>Количество ночей</option>
+                            <option selected>ночей</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -94,7 +117,7 @@ function Form() {
                         <select name="people_quantity" className="form-select my-2" aria-label="Default select example"
                                 value={toSend.people_quantity}
                                 onChange={handleChange}>>>
-                            <option selected>Количество человек</option>
+                            <option selected>гостей</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -121,7 +144,8 @@ function Form() {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="exampleFormControlTextarea1" className="form-label">Имя / комментарии</label>
-                        <textarea name="name_comments" className="form-control" id="exampleFormControlTextarea1" rows="3"
+                        <textarea name="name_comments" className="form-control" id="exampleFormControlTextarea1"
+                                  rows="3"
                                   value={toSend.name_comments}
                                   onChange={handleChange}
                         ></textarea>
@@ -132,9 +156,9 @@ function Form() {
                                   value={toSend.phone}
                                   onChange={handleChange}></textarea>
                     </div>
-                <button className='btn-primary'>
-                    ОТПРАВИТЬ
-                </button>
+                    <button className='btn-primary'>
+                        ОТПРАВИТЬ
+                    </button>
                 </div>
             </form>
         </>
