@@ -5,7 +5,6 @@ import swal from 'sweetalert';
 import moment from 'moment';
 
 import "react-datepicker/dist/react-datepicker.css";
-// import le from "react-datepicker";
 
 function Form() {
     const [startDate, setStartDate] = useState(new Date());
@@ -13,7 +12,6 @@ function Form() {
     roomPrice.set('Номер-студио', 800)
     roomPrice.set('Апартаменты-студио', 1350)
     roomPrice.set('Апартаменты', 1750)
-    // console.log(roomPrice.get('Номер-студио'))
 
     const [toSend, setToSend] = useState({
         room_type: '',
@@ -29,7 +27,7 @@ function Form() {
         send(
             process.env.REACT_APP_SERVICE_ID,
             process.env.REACT_APP_TEMPLATE_ID,
-            {...toSend, startDate: `${startDateTrimmed}`},
+            {...toSend, startDate: `${startDateTrimmed}`, message},
             process.env.REACT_APP_USER_ID,
         )
             .then((response) => {
@@ -47,17 +45,10 @@ function Form() {
         setToSend({...toSend, [e.target.name]: e.target.value});
     };
     const startDateTrimmed = moment(startDate).format("LL")
-    // console.log(startDate)
-    // console.log(startDateTrimmed)
     let message = ''
     if (toSend.room_quantity !== "" & toSend.room_type !== "" & toSend.nights_quantity !== "") {
-        // console.log("выбрано")
-        let messageCount = `Ваше
-                        бронирование: ${toSend.room_quantity} ${toSend.room_type} на ${toSend.nights_quantity} ночь
-                        / ночей стоимость
-                        от ${toSend.room_quantity * toSend.nights_quantity * roomPrice.get(`${toSend.room_type}`)} руб`
+        let messageCount = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type} на ${toSend.nights_quantity} ночь / ночей стоимость от ${toSend.room_quantity * toSend.nights_quantity * roomPrice.get(`${toSend.room_type}`)} руб`
         message = messageCount
-        // return messageCount
     }
 
     return (
@@ -65,9 +56,7 @@ function Form() {
             <form onSubmit={onSubmit}>
                 <div className="container">
                     <h1 className="d-flex justify-content-center">Заявка</h1>
-                    {/*<p className="d-flex justify-content-center">от {roomPrice.get(`${toSend.room_type}`)} ₽ за ночь</p>*/}
                     <p className="d-flex justify-content-center">{message}</p>
-                    {/*<h1 className="d-flex justify-content-center">{toSend.room_type}</h1>*/}
                     <select name='room_type' className="form-select my-2" aria-label="Default select example"
                             value={toSend.room_type}
                             onChange={handleChange}>
