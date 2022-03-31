@@ -1,4 +1,10 @@
 Web site for Hotel in Saint Petersburg
+
+The project uses React router for routing,
+React context API for state management, 
+Contentful headless CMS for data management,
+and Netlify to host the application.
+
 <img width="1438" alt="Screenshot at Mar 30 19-26-33" src="https://user-images.githubusercontent.com/83227158/160888418-f96d5943-75cb-469b-8d5e-02186c1ff4ff.png">
 <img width="1435" alt="Screenshot at Mar 30 19-26-53" src="https://user-images.githubusercontent.com/83227158/160888477-a1a360a2-fe51-4ae5-ad6d-4c59d2e3cee1.png">
 <img width="1437" alt="Screenshot at Mar 30 19-27-07" src="https://user-images.githubusercontent.com/83227158/160888525-0c00edf8-9093-4b11-9afb-48418ca81c74.png">
