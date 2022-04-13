@@ -22,14 +22,7 @@ function Form() {
         phone: '',
     });
 
-    // console.log(startDate)
-    // eslint-disable-next-line
     const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/g
-    // console.log(re.test(toSend.phone))
-    // console.log(Date.now())
-    // console.log(startDate.setHours(0,0,0,0) >= new Date().setHours(0,0,0,0))
-    // console.log(toSend)
-    // console.log(toSend.hasOwnProperty('email'))
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -151,14 +144,14 @@ function Form() {
                                   rows="3"
                                   value={toSend.name_comments}
                                   onChange={handleChange}
-                        ></textarea>
+                        />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="exampleFormControlTextarea1" className="form-label">Телефон</label>
                         <textarea name="phone" className="form-control" id="exampleFormControlTextarea1" rows="3"
                                   value={toSend.phone}
                                   placeholder="+79123456789"
-                                  onChange={handleChange}></textarea>
+                                  onChange={handleChange}/>
                     </div>
                     <button className='btn-primary'>
                         ОТПРАВИТЬ
