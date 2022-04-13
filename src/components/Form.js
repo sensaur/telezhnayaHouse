@@ -7,7 +7,14 @@ import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
 
 function Form() {
+    const roomsQuantityArr = Array.from(Array(6).keys())
+    roomsQuantityArr[0] = 'Количество номеров'
+    const nightsQuantityArr = Array.from(Array(15).keys())
+    nightsQuantityArr[0] = 'Ночей'
+    const guestsQuantityArr = Array.from(Array(15).keys())
+    guestsQuantityArr[0] = 'Гостей'
     const [startDate, setStartDate] = useState(new Date());
+
     let roomPrice = new Map();
     roomPrice.set('Номер-студио', 1250)
     roomPrice.set('Апартаменты-студио', 1750)
@@ -20,6 +27,7 @@ function Form() {
         people_quantity: '',
         name_comments: '',
         phone: '',
+        email: '',
     });
 
     // eslint-disable-next-line
@@ -27,8 +35,8 @@ function Form() {
     const onSubmit = (e) => {
         e.preventDefault();
         (startDate.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) ? swal("Начало бронирования не может быть ранее текущей даты") :
-            !toSend.hasOwnProperty('email') ? swal("Пожалуйста введите адрес электронной почты") :
-                !regExp.test(toSend.phone) ? swal("Номер введен некорректно. Пожалуйста введите номер в ином формате") :
+            !toSend.email ? swal("Пожалуйста введите адрес электронной почты") :
+                !regExp.test(toSend.phone) ? swal("Номер телефона введен некорректно. Пожалуйста введите номер в ином формате") :
                     send(
                         process.env.REACT_APP_SERVICE_ID,
                         process.env.REACT_APP_TEMPLATE_ID,
@@ -65,7 +73,7 @@ function Form() {
                     <select name='room_type' className="form-select my-2" aria-label="Default select example"
                             value={toSend.room_type}
                             onChange={handleChange}>
-                        <option selected>Тип комнаты</option>
+                        <option defaultValue="Тип комнтаты">Тип комнаты</option>
                         <option value="Номер-студио">Номер-студио</option>
                         <option value="Апартаменты-студио">Апартаменты-студио</option>
                         <option value="Апартаменты">Апартаменты</option>
@@ -73,12 +81,7 @@ function Form() {
                     <select name='room_quantity' className="form-select my-2" aria-label="Default select example"
                             value={toSend.room_quantity}
                             onChange={handleChange}>
-                        <option selected>Количество номеров</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
+                        {roomsQuantityArr.map((el, i) => <option key={i}>{el}</option>)}
                     </select>
                     <div className="d-flex">
                         <div style={{width: '600px'}}>Дата заезда
@@ -91,41 +94,13 @@ function Form() {
                         <select name='nights_quantity' className="form-select my-2 mx-2"
                                 aria-label="Default select example"
                                 value={toSend.nights_quantity}
-                                onChange={handleChange}>>
-                            <option selected>ночей</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
+                                onChange={handleChange}>
+                            {nightsQuantityArr.map((el, i) => <option key={i}>{el}</option>)}
                         </select>
                         <select name="people_quantity" className="form-select my-2" aria-label="Default select example"
                                 value={toSend.people_quantity}
                                 onChange={handleChange}>>>
-                            <option selected>гостей</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
+                            {guestsQuantityArr.map((el, i) => <option key={i}>{el}</option>)}
                         </select>
                     </div>
                     <div className="mb-3">
