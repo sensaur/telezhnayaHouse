@@ -23,6 +23,7 @@ function Form() {
     });
 
     // console.log(startDate)
+    // eslint-disable-next-line
     const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/g
     // console.log(re.test(toSend.phone))
     // console.log(Date.now())
