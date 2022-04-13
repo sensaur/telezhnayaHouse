@@ -9,9 +9,9 @@ import "react-datepicker/dist/react-datepicker.css";
 function Form() {
     const [startDate, setStartDate] = useState(new Date());
     let roomPrice = new Map();
-    roomPrice.set('Номер-студио', 800)
-    roomPrice.set('Апартаменты-студио', 1350)
-    roomPrice.set('Апартаменты', 1750)
+    roomPrice.set('Номер-студио', 1250)
+    roomPrice.set('Апартаменты-студио', 1750)
+    roomPrice.set('Апартаменты', 2000)
 
     const [toSend, setToSend] = useState({
         room_type: '',
