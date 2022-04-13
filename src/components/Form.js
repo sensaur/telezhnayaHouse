@@ -22,23 +22,34 @@ function Form() {
         phone: '',
     });
 
+    // console.log(startDate)
+    const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/g
+    // console.log(re.test(toSend.phone))
+    // console.log(Date.now())
+    // console.log(startDate.setHours(0,0,0,0) >= new Date().setHours(0,0,0,0))
+    // console.log(toSend)
+    // console.log(toSend.hasOwnProperty('email'))
+
     const onSubmit = (e) => {
         e.preventDefault();
-        send(
-            process.env.REACT_APP_SERVICE_ID,
-            process.env.REACT_APP_TEMPLATE_ID,
-            {...toSend, startDate: `${startDateTrimmed}`, message},
-            process.env.REACT_APP_USER_ID,
-        )
-            .then((response) => {
-                swal("Ваша заявка принята, спасибо! " +
-                    "В ближайшее время с Вами свяжется наш сотрудник")
-                console.log('SUCCESS!', response.status, response.text);
-            })
-            .catch((err) => {
-                console.log('FAILED...', err);
-                swal("что-то пошло не так")
-            });
+        (startDate.setHours(0,0,0,0) < new Date().setHours(0,0,0,0)) ? swal("Начало бронирования не может быть ранее текущей даты") :
+            !toSend.hasOwnProperty('email') ? swal("Пожалуйста введите адрес электронной почты") :
+                !regExp.test(toSend.phone) ? swal("Номер введен некорректно. Пожалуйста введите номер в ином формате") :
+                    send(
+                        process.env.REACT_APP_SERVICE_ID,
+                        process.env.REACT_APP_TEMPLATE_ID,
+                        {...toSend, startDate: `${startDateTrimmed}`, message},
+                        process.env.REACT_APP_USER_ID,
+                    )
+                        .then((response) => {
+                            swal("Ваша заявка принята, спасибо! " +
+                                "В ближайшее время с Вами свяжется наш сотрудник")
+                            console.log('SUCCESS!', response.status, response.text);
+                        })
+                        .catch((err) => {
+                            console.log('FAILED...', err);
+                            swal("что-то пошло не так")
+                        });
     };
 
     const handleChange = (e) => {
@@ -60,6 +71,7 @@ function Form() {
                     <select name='room_type' className="form-select my-2" aria-label="Default select example"
                             value={toSend.room_type}
                             onChange={handleChange}>
+                        <option selected>Тип комнаты</option>
                         <option selected>Тип комнаты</option>
                         <option value="Номер-студио">Номер-студио</option>
                         <option value="Апартаменты-студио">Апартаменты-студио</option>
@@ -126,6 +138,7 @@ function Form() {
                     <div className="mb-3">
                         <label htmlFor="exampleFormControlInput1" className="form-label">Email</label>
                         <input name='email' type="email" className="form-control" id="exampleFormControlInput1"
+                               aria-describedby="emailHelp"
                                placeholder="name@example.com"
                                value={toSend.email}
                                onChange={handleChange}
@@ -143,6 +156,7 @@ function Form() {
                         <label htmlFor="exampleFormControlTextarea1" className="form-label">Телефон</label>
                         <textarea name="phone" className="form-control" id="exampleFormControlTextarea1" rows="3"
                                   value={toSend.phone}
+                                  placeholder="+79123456789"
                                   onChange={handleChange}></textarea>
                     </div>
                     <button className='btn-primary'>
