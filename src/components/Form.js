@@ -22,11 +22,11 @@ function Form() {
         phone: '',
     });
 
+    // eslint-disable-next-line
     const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/g
-
     const onSubmit = (e) => {
         e.preventDefault();
-        (startDate.setHours(0,0,0,0) < new Date().setHours(0,0,0,0)) ? swal("Начало бронирования не может быть ранее текущей даты") :
+        (startDate.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) ? swal("Начало бронирования не может быть ранее текущей даты") :
             !toSend.hasOwnProperty('email') ? swal("Пожалуйста введите адрес электронной почты") :
                 !regExp.test(toSend.phone) ? swal("Номер введен некорректно. Пожалуйста введите номер в ином формате") :
                     send(
@@ -65,7 +65,6 @@ function Form() {
                     <select name='room_type' className="form-select my-2" aria-label="Default select example"
                             value={toSend.room_type}
                             onChange={handleChange}>
-                        <option selected>Тип комнаты</option>
                         <option selected>Тип комнаты</option>
                         <option value="Номер-студио">Номер-студио</option>
                         <option value="Апартаменты-студио">Апартаменты-студио</option>
