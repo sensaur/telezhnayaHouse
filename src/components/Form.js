@@ -21,10 +21,10 @@ function Form() {
     roomPrice.set('Апартаменты', 2000)
 
     const [toSend, setToSend] = useState({
-        room_type: '',
-        room_quantity: '',
-        nights_quantity: '',
-        people_quantity: '',
+        room_type: 'Тип комнаты',
+        room_quantity: 'Количество номеров',
+        nights_quantity: 'Ночей',
+        people_quantity: 'Гостей',
         name_comments: '',
         phone: '',
         email: '',
@@ -58,12 +58,13 @@ function Form() {
         setToSend({...toSend, [e.target.name]: e.target.value});
     };
     const startDateTrimmed = moment(startDate).format("LL")
-    let message = ''
-    if (toSend.room_quantity !== "" & toSend.room_type !== "" & toSend.nights_quantity !== "") {
+    let message = 'Выберите параметры и мы рассчитаем стоимость'
+    if ( toSend.room_type === "Тип комнаты" || toSend.room_quantity === "Количество номеров" ||  toSend.nights_quantity === "Ночей") {
+        message = 'Выберите параметры и мы рассчитаем стоимость'
+    } else {
         let messageCount = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type} на ${toSend.nights_quantity} ночь / ночей стоимость от ${toSend.room_quantity * toSend.nights_quantity * roomPrice.get(`${toSend.room_type}`)} руб`
         message = messageCount
     }
-
     return (
         <>
             <form onSubmit={onSubmit}>
@@ -72,7 +73,8 @@ function Form() {
                     <p className="d-flex justify-content-center">{message}</p>
                     <select name='room_type' className="form-select my-2" aria-label="Default select example"
                             value={toSend.room_type}
-                            onChange={handleChange}>
+                            onChange={handleChange}
+                            >
                         <option defaultValue="Тип комнтаты">Тип комнаты</option>
                         <option value="Номер-студио">Номер-студио</option>
                         <option value="Апартаменты-студио">Апартаменты-студио</option>
@@ -94,7 +96,8 @@ function Form() {
                         <select name='nights_quantity' className="form-select my-2 mx-2"
                                 aria-label="Default select example"
                                 value={toSend.nights_quantity}
-                                onChange={handleChange}>
+                                onChange={handleChange}
+                                placeholder="Количество номеров">
                             {nightsQuantityArr.map((el, i) => <option key={i}>{el}</option>)}
                         </select>
                         <select name="people_quantity" className="form-select my-2" aria-label="Default select example"
