@@ -3,10 +3,16 @@ import DatePicker from "react-datepicker";
 import {send} from 'emailjs-com';
 import swal from 'sweetalert';
 import moment from 'moment';
-
 import "react-datepicker/dist/react-datepicker.css";
 
+import { registerLocale } from  "react-datepicker";
+import ru from 'date-fns/locale/ru';
+registerLocale('ru', ru)
+
+
+
 function Form() {
+    let nights = 1
     const roomsQuantityArr = Array.from(Array(6).keys())
     roomsQuantityArr.shift()
     const nightsQuantityArr = Array.from(Array(15).keys())
@@ -18,13 +24,9 @@ function Form() {
     let dateDeparture = new Date()
     const oneDay = 24 * 60 * 60 * 1000;
     dateDeparture = dateDeparture.setDate(dateDeparture.getDate()+1)
-
     const [startDate, setStartDate] = useState(dateArrival);
     const [endDate, setEndDate] = useState(dateDeparture);
-    const nights = Math.round(Math.abs((startDate - endDate) / oneDay))
-    // console.log("startDate==>",startDate)
-    // console.log("dateDeparture==>",dateDeparture)
-    // console.log("endDate==>",endDate)
+    nights = Math.round(Math.abs((startDate - endDate) / oneDay))
     console.log(nights);
 
     let roomPrice = new Map();
@@ -34,7 +36,6 @@ function Form() {
     const [toSend, setToSend] = useState({
         room_type: 'Номер-студио',
         room_quantity: '1',
-        nights_quantity: '1',
         people_quantity: 'Гостей',
         name_comments: '',
         phone: '',
@@ -53,7 +54,7 @@ function Form() {
                     send(
                         process.env.REACT_APP_SERVICE_ID,
                         process.env.REACT_APP_TEMPLATE_ID,
-                        {...toSend, startDate: `${startDateTrimmed}`, message},
+                        {...toSend, startDate: `${startDateTrimmed}`, endDate:`${endDateTrimmed}`, message, nights_quantity: `${nights}`},
                         process.env.REACT_APP_USER_ID,
                     )
                         .then((response) => {
@@ -71,7 +72,7 @@ function Form() {
         setToSend({...toSend, [e.target.name]: e.target.value});
     };
     const startDateTrimmed = moment(startDate).format("LL")
-    // const endDateTrimmed = moment(endDate).format("LL")
+    const endDateTrimmed = moment(endDate).format("LL")
 
 
     let message = 'Выберите параметры и мы рассчитаем стоимость'
@@ -104,12 +105,12 @@ function Form() {
                     </select>
                     <div className="d-flex">
                         <div style={{width: '600px'}} className="mx-2">Дата заезда
-                            <DatePicker name="date_arrival" className="form-select my-2" selected={startDate}
+                            <DatePicker locale="ru" name="date_arrival" className="form-select my-2" selected={startDate}
                                 value={toSend.date_arrival}
                                         onChange={(date) => setStartDate(date)}/>
                         </div>
                         <div style={{width: '600px'}} className="mx-2">Дата выезда
-                            <DatePicker name="date_departure" className="form-select my-2" selected={endDate}
+                            <DatePicker locale="ru" name="date_departure" className="form-select my-2" selected={endDate}
                                 value={toSend.date_departure}
                                         onChange={(date) => setEndDate(date)}/>
                         </div>
