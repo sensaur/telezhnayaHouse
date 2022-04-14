@@ -104,17 +104,17 @@ function Form() {
                         {roomsQuantityArr.map((el, i) => <option key={i}>{el}</option>)}
                     </select>
                     <div className="d-flex">
-                        <div style={{width: '600px'}} className="mx-2">Дата заезда
-                            <DatePicker locale="ru" name="date_arrival" className="form-select my-2" selected={startDate}
+                        <div style={{width: '600px'}} className="mx-2 text-center">Заезд
+                            <DatePicker locale="ru" name="date_arrival" className="form-select my-2 text-center" selected={startDate}
                                 value={toSend.date_arrival}
                                         onChange={(date) => setStartDate(date)}/>
                         </div>
-                        <div style={{width: '600px'}} className="mx-2">Дата выезда
-                            <DatePicker locale="ru" name="date_departure" className="form-select my-2" selected={endDate}
+                        <div style={{width: '600px'}} className="mx-2 text-center">Выезд
+                            <DatePicker locale="ru" name="date_departure" className="form-select my-2 text-center" selected={endDate}
                                 value={toSend.date_departure}
                                         onChange={(date) => setEndDate(date)}/>
                         </div>
-                        <select name="people_quantity" className="form-select my-2 mx-2" aria-label="Default select example"
+                        <select name="people_quantity" className="form-select my-2 mx-2 text-center" aria-label="Default select example"
                                 value={toSend.people_quantity}
                                 onChange={handleChange}>>>
                             {guestsQuantityArr.map((el, i) => <option key={i}>{el}</option>)}
