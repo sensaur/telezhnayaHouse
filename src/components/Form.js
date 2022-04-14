@@ -8,27 +8,40 @@ import "react-datepicker/dist/react-datepicker.css";
 
 function Form() {
     const roomsQuantityArr = Array.from(Array(6).keys())
-    roomsQuantityArr[0] = 'Количество номеров'
+    roomsQuantityArr.shift()
     const nightsQuantityArr = Array.from(Array(15).keys())
-    nightsQuantityArr[0] = 'Ночей'
+    nightsQuantityArr.shift()
     const guestsQuantityArr = Array.from(Array(15).keys())
     guestsQuantityArr[0] = 'Гостей'
-    const [startDate, setStartDate] = useState(new Date());
+
+    let dateArrival = new Date();
+    let dateDeparture = new Date()
+    const oneDay = 24 * 60 * 60 * 1000;
+    dateDeparture = dateDeparture.setDate(dateDeparture.getDate()+1)
+
+    const [startDate, setStartDate] = useState(dateArrival);
+    const [endDate, setEndDate] = useState(dateDeparture);
+    const nights = Math.round(Math.abs((startDate - endDate) / oneDay))
+    // console.log("startDate==>",startDate)
+    // console.log("dateDeparture==>",dateDeparture)
+    // console.log("endDate==>",endDate)
+    console.log(nights);
 
     let roomPrice = new Map();
     roomPrice.set('Номер-студио', 1250)
     roomPrice.set('Апартаменты-студио', 1750)
     roomPrice.set('Апартаменты', 2000)
-
     const [toSend, setToSend] = useState({
-        room_type: 'Тип комнаты',
-        room_quantity: 'Количество номеров',
-        nights_quantity: 'Ночей',
+        room_type: 'Номер-студио',
+        room_quantity: '1',
+        nights_quantity: '1',
         people_quantity: 'Гостей',
         name_comments: '',
         phone: '',
         email: '',
     });
+
+    console.log(toSend);
 
     // eslint-disable-next-line
     const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/g
@@ -58,11 +71,14 @@ function Form() {
         setToSend({...toSend, [e.target.name]: e.target.value});
     };
     const startDateTrimmed = moment(startDate).format("LL")
+    // const endDateTrimmed = moment(endDate).format("LL")
+
+
     let message = 'Выберите параметры и мы рассчитаем стоимость'
-    if ( toSend.room_type === "Тип комнаты" || toSend.room_quantity === "Количество номеров" ||  toSend.nights_quantity === "Ночей") {
+    if (toSend.room_type === "Тип комнаты" || toSend.room_quantity === "Количество номеров") {
         message = 'Выберите параметры и мы рассчитаем стоимость'
     } else {
-        let messageCount = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type} на ${toSend.nights_quantity} ночь / ночей стоимость от ${toSend.room_quantity * toSend.nights_quantity * roomPrice.get(`${toSend.room_type}`)} руб`
+        let messageCount = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type} на ${nights} ночь / ночей стоимость от ${toSend.room_quantity * nights * roomPrice.get(`${toSend.room_type}`)} руб`
         message = messageCount
     }
     return (
@@ -71,36 +87,33 @@ function Form() {
                 <div className="container">
                     <h1 className="d-flex justify-content-center">Заявка</h1>
                     <p className="d-flex justify-content-center">{message}</p>
+                    <label htmlFor="exampleFormControlSelect2">Тип комнаты</label>
                     <select name='room_type' className="form-select my-2" aria-label="Default select example"
                             value={toSend.room_type}
                             onChange={handleChange}
-                            >
-                        <option defaultValue="Тип комнтаты">Тип комнаты</option>
+                    >
                         <option value="Номер-студио">Номер-студио</option>
                         <option value="Апартаменты-студио">Апартаменты-студио</option>
                         <option value="Апартаменты">Апартаменты</option>
                     </select>
+                    <label htmlFor="exampleFormControlSelect2">Количество номеров</label>
                     <select name='room_quantity' className="form-select my-2" aria-label="Default select example"
                             value={toSend.room_quantity}
                             onChange={handleChange}>
                         {roomsQuantityArr.map((el, i) => <option key={i}>{el}</option>)}
                     </select>
                     <div className="d-flex">
-                        <div style={{width: '600px'}}>Дата заезда
-                            {/*<DatePicker name="date_arrival" className="form-select my-2" selected={startDate}*/}
-                            {/*            onChange={(date) => setStartDate(date)}/>*/}
+                        <div style={{width: '600px'}} className="mx-2">Дата заезда
                             <DatePicker name="date_arrival" className="form-select my-2" selected={startDate}
-                                        value={toSend.date_arrival}
+                                value={toSend.date_arrival}
                                         onChange={(date) => setStartDate(date)}/>
                         </div>
-                        <select name='nights_quantity' className="form-select my-2 mx-2"
-                                aria-label="Default select example"
-                                value={toSend.nights_quantity}
-                                onChange={handleChange}
-                                placeholder="Количество номеров">
-                            {nightsQuantityArr.map((el, i) => <option key={i}>{el}</option>)}
-                        </select>
-                        <select name="people_quantity" className="form-select my-2" aria-label="Default select example"
+                        <div style={{width: '600px'}} className="mx-2">Дата выезда
+                            <DatePicker name="date_departure" className="form-select my-2" selected={endDate}
+                                value={toSend.date_departure}
+                                        onChange={(date) => setEndDate(date)}/>
+                        </div>
+                        <select name="people_quantity" className="form-select my-2 mx-2" aria-label="Default select example"
                                 value={toSend.people_quantity}
                                 onChange={handleChange}>>>
                             {guestsQuantityArr.map((el, i) => <option key={i}>{el}</option>)}
@@ -125,7 +138,7 @@ function Form() {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="exampleFormControlTextarea1" className="form-label">Телефон</label>
-                        <textarea name="phone" className="form-control" id="exampleFormControlTextarea1" rows="3"
+                        <textarea name="phone" className="form-control" id="exampleFormControlTextarea1" rows="1"
                                   value={toSend.phone}
                                   placeholder="+79123456789"
                                   onChange={handleChange}/>
