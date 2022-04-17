@@ -14,7 +14,7 @@ registerLocale('ru', ru)
 
 function Form() {
     const {rooms} = useContext(RoomContext)
-    console.log(rooms)
+    // console.log(rooms)
     let nights = 1
     const roomsQuantityArr = Array.from(Array(6).keys())
     roomsQuantityArr.shift()
@@ -29,21 +29,10 @@ function Form() {
     dateDeparture = dateDeparture.setDate(dateDeparture.getDate() + 1)
     const [startDate, setStartDate] = useState(dateArrival);
     const [endDate, setEndDate] = useState(dateDeparture);
-    // const [datesOfStay, setDatesOfStay] = useState([moment(startDate).format("DD/MM/YYYY")]);
     nights = Math.round(Math.abs((startDate - endDate) / oneDay))
-    let datesOfStay = []
-    datesOfStay[0] = dateArrival
+    // let datesOfStay = []
+    // datesOfStay[0] = dateArrival
 
-    let newArr = []
-    function addNights(arr) {
-        newArr = [arr[0]]
-        for (let i = 1; i < nights; i++) {
-            newArr.push(i)
-        }
-        return newArr
-    }
-
-    // console.log(nights);
     let roomPrice = new Map();
     roomPrice.set('Номер-студио', 1250)
     roomPrice.set('Апартаменты-студио', 1750)
@@ -56,9 +45,6 @@ function Form() {
         phone: '',
         email: '',
     });
-
-    // console.log(toSend);
-
     // eslint-disable-next-line
     const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/g
     const onSubmit = (e) => {
@@ -94,9 +80,14 @@ function Form() {
     };
     const startDateTrimmed = moment(startDate).format("DD/MM/YYYY")
     const endDateTrimmed = moment(endDate).format("DD/MM/YYYY")
-    addNights([`${startDateTrimmed}}`])
-    let formattedDates = newArr.map(el => el )
-    console.log(formattedDates)
+    const datesArr = [...Array(nights).keys()]
+    let datesFilled = datesArr.map((el, i) => {
+            let fullDate = new Date(startDate)
+            fullDate = fullDate.setDate(fullDate.getDate() + i)
+            return moment(fullDate).format("DD/MM/YYYY")
+        }
+    )
+    // console.log("datesFilled", datesFilled)
 
     let message = 'Выберите параметры и мы рассчитаем стоимость'
     if (toSend.room_type === "Тип комнаты" || toSend.room_quantity === "Количество номеров") {
@@ -105,14 +96,14 @@ function Form() {
         if (toSend.room_type === "Апартаменты-студио") {
             let priceList = rooms[1].priceList
             console.log(priceList)
-            console.log(toSend.room_type)
+            console.log(datesFilled)
+            let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
+            let total = price.reduce((a, b) => a + b, 0)
+            let messageCount = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type}\n`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ночь / ночей стоимость ${total} руб`
+            message = messageCount
+            console.log(total)
         }
-        // console.log(startDateTrimmed)
-        // console.log(datesOfStay)
-        // datesOfStay.map(el => el)
-        // console.log(datesOfStay)
-        let messageCount = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type} на ${nights} ночь / ночей стоимость от ${toSend.room_quantity * nights * roomPrice.get(`${toSend.room_type}`)} руб`
-        message = messageCount
     }
 
     return (
