@@ -1,17 +1,20 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import DatePicker from "react-datepicker";
 import {send} from 'emailjs-com';
 import swal from 'sweetalert';
 import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
+import {RoomContext} from "../context";
 
-import { registerLocale } from  "react-datepicker";
+import {registerLocale} from "react-datepicker";
 import ru from 'date-fns/locale/ru';
+
 registerLocale('ru', ru)
 
 
-
 function Form() {
+    const {rooms} = useContext(RoomContext)
+    console.log(rooms)
     let nights = 1
     const roomsQuantityArr = Array.from(Array(6).keys())
     roomsQuantityArr.shift()
@@ -23,12 +26,24 @@ function Form() {
     let dateArrival = new Date();
     let dateDeparture = new Date()
     const oneDay = 24 * 60 * 60 * 1000;
-    dateDeparture = dateDeparture.setDate(dateDeparture.getDate()+1)
+    dateDeparture = dateDeparture.setDate(dateDeparture.getDate() + 1)
     const [startDate, setStartDate] = useState(dateArrival);
     const [endDate, setEndDate] = useState(dateDeparture);
+    // const [datesOfStay, setDatesOfStay] = useState([moment(startDate).format("DD/MM/YYYY")]);
     nights = Math.round(Math.abs((startDate - endDate) / oneDay))
-    console.log(nights);
+    let datesOfStay = []
+    datesOfStay[0] = dateArrival
 
+    let newArr = []
+    function addNights(arr) {
+        newArr = [arr[0]]
+        for (let i = 1; i < nights; i++) {
+            newArr.push(i)
+        }
+        return newArr
+    }
+
+    // console.log(nights);
     let roomPrice = new Map();
     roomPrice.set('Номер-студио', 1250)
     roomPrice.set('Апартаменты-студио', 1750)
@@ -42,7 +57,7 @@ function Form() {
         email: '',
     });
 
-    console.log(toSend);
+    // console.log(toSend);
 
     // eslint-disable-next-line
     const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/g
@@ -54,7 +69,13 @@ function Form() {
                     send(
                         process.env.REACT_APP_SERVICE_ID,
                         process.env.REACT_APP_TEMPLATE_ID,
-                        {...toSend, startDate: `${startDateTrimmed}`, endDate:`${endDateTrimmed}`, message, nights_quantity: `${nights}`},
+                        {
+                            ...toSend,
+                            startDate: `${startDateTrimmed}`,
+                            endDate: `${endDateTrimmed}`,
+                            message,
+                            nights_quantity: `${nights}`
+                        },
                         process.env.REACT_APP_USER_ID,
                     )
                         .then((response) => {
@@ -71,17 +92,29 @@ function Form() {
     const handleChange = (e) => {
         setToSend({...toSend, [e.target.name]: e.target.value});
     };
-    const startDateTrimmed = moment(startDate).format("LL")
-    const endDateTrimmed = moment(endDate).format("LL")
-
+    const startDateTrimmed = moment(startDate).format("DD/MM/YYYY")
+    const endDateTrimmed = moment(endDate).format("DD/MM/YYYY")
+    addNights([`${startDateTrimmed}}`])
+    let formattedDates = newArr.map(el => el )
+    console.log(formattedDates)
 
     let message = 'Выберите параметры и мы рассчитаем стоимость'
     if (toSend.room_type === "Тип комнаты" || toSend.room_quantity === "Количество номеров") {
         message = 'Выберите параметры и мы рассчитаем стоимость'
     } else {
+        if (toSend.room_type === "Апартаменты-студио") {
+            let priceList = rooms[1].priceList
+            console.log(priceList)
+            console.log(toSend.room_type)
+        }
+        // console.log(startDateTrimmed)
+        // console.log(datesOfStay)
+        // datesOfStay.map(el => el)
+        // console.log(datesOfStay)
         let messageCount = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type} на ${nights} ночь / ночей стоимость от ${toSend.room_quantity * nights * roomPrice.get(`${toSend.room_type}`)} руб`
         message = messageCount
     }
+
     return (
         <>
             <form onSubmit={onSubmit}>
@@ -105,16 +138,19 @@ function Form() {
                     </select>
                     <div className="d-flex">
                         <div style={{width: '600px'}} className="mx-2 text-center">Заезд
-                            <DatePicker locale="ru" name="date_arrival" className="form-select my-2 text-center" selected={startDate}
-                                value={toSend.date_arrival}
+                            <DatePicker locale="ru" name="date_arrival" className="form-select my-2 text-center"
+                                        selected={startDate}
+                                        value={toSend.date_arrival}
                                         onChange={(date) => setStartDate(date)}/>
                         </div>
                         <div style={{width: '600px'}} className="mx-2 text-center">Выезд
-                            <DatePicker locale="ru" name="date_departure" className="form-select my-2 text-center" selected={endDate}
-                                value={toSend.date_departure}
+                            <DatePicker locale="ru" name="date_departure" className="form-select my-2 text-center"
+                                        selected={endDate}
+                                        value={toSend.date_departure}
                                         onChange={(date) => setEndDate(date)}/>
                         </div>
-                        <select name="people_quantity" className="form-select my-2 mx-2 text-center" aria-label="Default select example"
+                        <select name="people_quantity" className="form-select my-2 mx-2 text-center"
+                                aria-label="Default select example"
                                 value={toSend.people_quantity}
                                 onChange={handleChange}>>>
                             {guestsQuantityArr.map((el, i) => <option key={i}>{el}</option>)}
