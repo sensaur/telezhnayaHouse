@@ -59,7 +59,7 @@ function Form() {
                             ...toSend,
                             startDate: `${startDateTrimmed}`,
                             endDate: `${endDateTrimmed}`,
-                            message,
+                            message: message1,
                             nights_quantity: `${nights}`
                         },
                         process.env.REACT_APP_USER_ID,
@@ -88,9 +88,10 @@ function Form() {
         }
     )
     // console.log("datesFilled", datesFilled)
-    let message = 'Выберите параметры и мы рассчитаем стоимость'
+    let message1 = 'Выберите параметры и мы рассчитаем стоимость'
+    let message2 = ''
     if (toSend.room_type === "Тип комнаты" || toSend.room_quantity === "Количество номеров") {
-        message = 'Выберите параметры и мы рассчитаем стоимость'
+        message1 = 'Выберите параметры и мы рассчитаем стоимость'
     } else {
         if (toSend.room_type === "Апартаменты-студио" && rooms.length === 3) {
             let priceList = rooms[1].priceList
@@ -98,9 +99,11 @@ function Form() {
             // console.log(datesFilled)
             let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
             let total = price.reduce((a, b) => a + b, 0)
-            let messageCount = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type}\n`
-                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ночь / ночей стоимость ${total * toSend.room_quantity} руб`
-            message = messageCount
+            let messageCount1 = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type}\n`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ночь / ночей, тариф ${(total * toSend.room_quantity / 0.9).toLocaleString('ru')} руб.\n`
+            let messageCount2 = `c учетом скидки "БРОНИРОВАНИЕ НА САЙТЕ" стоимость ${(total * toSend.room_quantity).toLocaleString('ru')} руб.`
+            message1 = messageCount1
+            message2 = messageCount2
             // console.log(total)
         } else if (toSend.room_type === "Номер-студио" && rooms.length === 3) {
             let priceList = []
@@ -109,9 +112,11 @@ function Form() {
             // console.log(datesFilled)
             let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
             let total = price.reduce((a, b) => a + b, 0)
-            let messageCount = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type}\n`
-                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ночь / ночей стоимость ${total * toSend.room_quantity} руб`
-            message = messageCount
+            let messageCount1 = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type}\n`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ночь / ночей, тариф ${(total * toSend.room_quantity / 0.9).toLocaleString('ru')} руб.\n`
+            let messageCount2 = `c учетом скидки "БРОНИРОВАНИЕ НА САЙТЕ" стоимость ${(total * toSend.room_quantity).toLocaleString('ru')} руб.`
+            message1 = messageCount1
+            message2 = messageCount2
             // console.log(total)
         } else if (toSend.room_type === "Апартаменты" && rooms.length === 3) {
             let priceList = rooms[2].priceList
@@ -119,9 +124,11 @@ function Form() {
             // console.log(datesFilled)
             let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
             let total = price.reduce((a, b) => a + b, 0)
-                let messageCount = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type}\n`
-                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ночь / ночей стоимость ${total * toSend.room_quantity} руб`
-            message = messageCount
+            let messageCount1 = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type}\n`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ночь / ночей, тариф ${(total * toSend.room_quantity / 0.9).toLocaleString('ru')} руб.\n`
+            let messageCount2 = `c учетом скидки "БРОНИРОВАНИЕ НА САЙТЕ" стоимость ${(total * toSend.room_quantity).toLocaleString('ru')} руб.`
+            message1 = messageCount1
+            message2 = messageCount2
             // console.log(total)
         }
     }
@@ -131,7 +138,8 @@ function Form() {
             <form onSubmit={onSubmit}>
                 <div className="container">
                     <h1 className="d-flex justify-content-center">Заявка</h1>
-                    <p className="d-flex justify-content-center">{message}</p>
+                    <p className="d-flex justify-content-center">{message1}</p>
+                    <p className="d-flex justify-content-center"><b>{message2}</b></p>
                     <label htmlFor="exampleFormControlSelect2">Тип комнаты</label>
                     <select name='room_type' className="form-select my-2" aria-label="Default select example"
                             value={toSend.room_type}
