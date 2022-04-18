@@ -168,13 +168,13 @@ function Form() {
                     </select>
                     <div className="d-flex">
                         <div style={{width: '600px'}} className="mx-2 text-center">Заезд
-                            <DatePicker locale="ru" name="date_arrival" className="form-select my-2 text-center"
+                            <DatePicker dateFormat="dd/MM/yyyy" locale="ru" name="date_arrival" className="form-select my-2 text-center"
                                         selected={startDate}
                                         value={toSend.date_arrival}
                                         onChange={(date) => setStartDate(date)}/>
                         </div>
                         <div style={{width: '600px'}} className="mx-2 text-center">Выезд
-                            <DatePicker locale="ru" name="date_departure" className="form-select my-2 text-center"
+                            <DatePicker dateFormat="dd/MM/yyyy" locale="ru" name="date_departure" className="form-select my-2 text-center"
                                         selected={endDate}
                                         value={toSend.date_departure}
                                         onChange={(date) => setEndDate(date)}/>
