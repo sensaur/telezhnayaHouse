@@ -88,21 +88,41 @@ function Form() {
         }
     )
     // console.log("datesFilled", datesFilled)
-
     let message = 'Выберите параметры и мы рассчитаем стоимость'
     if (toSend.room_type === "Тип комнаты" || toSend.room_quantity === "Количество номеров") {
         message = 'Выберите параметры и мы рассчитаем стоимость'
     } else {
-        if (toSend.room_type === "Апартаменты-студио") {
+        if (toSend.room_type === "Апартаменты-студио" && rooms.length === 3) {
             let priceList = rooms[1].priceList
-            console.log(priceList)
-            console.log(datesFilled)
+            // console.log(priceList)
+            // console.log(datesFilled)
             let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
             let total = price.reduce((a, b) => a + b, 0)
             let messageCount = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type}\n`
-                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ночь / ночей стоимость ${total} руб`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ночь / ночей стоимость ${total * toSend.room_quantity} руб`
             message = messageCount
-            console.log(total)
+            // console.log(total)
+        } else if (toSend.room_type === "Номер-студио" && rooms.length === 3) {
+            let priceList = []
+            priceList = rooms[0].priceList
+            // console.log(priceList)
+            // console.log(datesFilled)
+            let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
+            let total = price.reduce((a, b) => a + b, 0)
+            let messageCount = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type}\n`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ночь / ночей стоимость ${total * toSend.room_quantity} руб`
+            message = messageCount
+            // console.log(total)
+        } else if (toSend.room_type === "Апартаменты" && rooms.length === 3) {
+            let priceList = rooms[2].priceList
+            // console.log(priceList)
+            // console.log(datesFilled)
+            let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
+            let total = price.reduce((a, b) => a + b, 0)
+                let messageCount = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type}\n`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ночь / ночей стоимость ${total * toSend.room_quantity} руб`
+            message = messageCount
+            // console.log(total)
         }
     }
 
