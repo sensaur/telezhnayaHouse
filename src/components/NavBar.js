@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import logo from '../images/logo.svg'
-import {FaAlignRight, FaTelegramPlane, FaEnvelope} from "react-icons/all";
+import {FaTelegramPlane, FaEnvelope} from "react-icons/all";
 import {Link} from 'react-router-dom'
 
 class NavBar extends Component {
