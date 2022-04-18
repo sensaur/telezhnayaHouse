@@ -14,7 +14,18 @@ registerLocale('ru', ru)
 
 function Form() {
     const {rooms} = useContext(RoomContext)
+
     // console.log(rooms)
+
+    function numWord(value, words) {
+        value = Math.abs(value) % 100;
+        let num = value % 10;
+        if (value > 10 && value < 20) return words[2];
+        if (num > 1 && num < 5) return words[1];
+        if (num === 1) return words[0];
+        return words[2];
+    }
+
     let nights = 1
     const roomsQuantityArr = Array.from(Array(6).keys())
     roomsQuantityArr.shift()
@@ -34,11 +45,11 @@ function Form() {
     // datesOfStay[0] = dateArrival
 
     let roomPrice = new Map();
-    roomPrice.set('Номер-студио', 1250)
-    roomPrice.set('Апартаменты-студио', 1750)
+    roomPrice.set('Номер-студия', 1250)
+    roomPrice.set('Апартаменты-студия', 1750)
     roomPrice.set('Апартаменты', 2000)
     const [toSend, setToSend] = useState({
-        room_type: 'Номер-студио',
+        room_type: 'Номер-студия',
         room_quantity: '1',
         people_quantity: 'Гостей',
         name_comments: '',
@@ -59,7 +70,7 @@ function Form() {
                             ...toSend,
                             startDate: `${startDateTrimmed}`,
                             endDate: `${endDateTrimmed}`,
-                            message: message1,
+                            message: message1 + message2,
                             nights_quantity: `${nights}`
                         },
                         process.env.REACT_APP_USER_ID,
@@ -93,27 +104,27 @@ function Form() {
     if (toSend.room_type === "Тип комнаты" || toSend.room_quantity === "Количество номеров") {
         message1 = 'Выберите параметры и мы рассчитаем стоимость'
     } else {
-        if (toSend.room_type === "Апартаменты-студио" && rooms.length === 3) {
+        if (toSend.room_type === "Апартаменты-студия" && rooms.length === 3) {
             let priceList = rooms[1].priceList
             // console.log(priceList)
             // console.log(datesFilled)
             let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
             let total = price.reduce((a, b) => a + b, 0)
-            let messageCount1 = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type}\n`
-                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ночь / ночей, тариф ${(total * toSend.room_quantity / 0.9).toLocaleString('ru')} руб.\n`
+            let messageCount1 = `Ваше бронирование: ${toSend.room_quantity} ${numWord(toSend.room_quantity, ['номер', 'номера', 'номеров'])} "${toSend.room_type}"\n`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ${numWord(nights, ['ночь', 'ночи', 'ночей'])}, тариф ${(total * toSend.room_quantity / 0.9).toLocaleString('ru')} руб.\n`
             let messageCount2 = `c учетом скидки "БРОНИРОВАНИЕ НА САЙТЕ" стоимость ${(total * toSend.room_quantity).toLocaleString('ru')} руб.`
             message1 = messageCount1
             message2 = messageCount2
             // console.log(total)
-        } else if (toSend.room_type === "Номер-студио" && rooms.length === 3) {
+        } else if (toSend.room_type === "Номер-студия" && rooms.length === 3) {
             let priceList = []
             priceList = rooms[0].priceList
             // console.log(priceList)
             // console.log(datesFilled)
             let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
             let total = price.reduce((a, b) => a + b, 0)
-            let messageCount1 = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type}\n`
-                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ночь / ночей, тариф ${(total * toSend.room_quantity / 0.9).toLocaleString('ru')} руб.\n`
+            let messageCount1 = `Ваше бронирование: ${toSend.room_quantity} ${numWord(toSend.room_quantity, ['номер', 'номера', 'номеров'])} "${toSend.room_type}"\n`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ${numWord(nights, ['ночь', 'ночи', 'ночей'])}, тариф ${(total * toSend.room_quantity / 0.9).toLocaleString('ru')} руб.\n`
             let messageCount2 = `c учетом скидки "БРОНИРОВАНИЕ НА САЙТЕ" стоимость ${(total * toSend.room_quantity).toLocaleString('ru')} руб.`
             message1 = messageCount1
             message2 = messageCount2
@@ -124,8 +135,8 @@ function Form() {
             // console.log(datesFilled)
             let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
             let total = price.reduce((a, b) => a + b, 0)
-            let messageCount1 = `Ваше бронирование: ${toSend.room_quantity} ${toSend.room_type}\n`
-                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ночь / ночей, тариф ${(total * toSend.room_quantity / 0.9).toLocaleString('ru')} руб.\n`
+            let messageCount1 = `Ваше бронирование: ${toSend.room_quantity} ${numWord(toSend.room_quantity, ['номер', 'номера', 'номеров'])} "${toSend.room_type}"\n`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ${numWord(nights, ['ночь', 'ночи', 'ночей'])}, тариф ${(total * toSend.room_quantity / 0.9).toLocaleString('ru')} руб.\n`
             let messageCount2 = `c учетом скидки "БРОНИРОВАНИЕ НА САЙТЕ" стоимость ${(total * toSend.room_quantity).toLocaleString('ru')} руб.`
             message1 = messageCount1
             message2 = messageCount2
@@ -145,8 +156,8 @@ function Form() {
                             value={toSend.room_type}
                             onChange={handleChange}
                     >
-                        <option value="Номер-студио">Номер-студио</option>
-                        <option value="Апартаменты-студио">Апартаменты-студио</option>
+                        <option value="Номер-студия">Номер-студия</option>
+                        <option value="Апартаменты-студия">Апартаменты-студия</option>
                         <option value="Апартаменты">Апартаменты</option>
                     </select>
                     <label htmlFor="exampleFormControlSelect2">Количество номеров</label>
