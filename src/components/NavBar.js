@@ -9,6 +9,7 @@ class NavBar extends Component {
     }
     handleToggle = () => {
         this.setState({isOpen: !this.state.isOpen})
+        setTimeout(()=>this.setState({isOpen: !this.state.isOpen}),2000)
     }
 
     render() {
@@ -20,7 +21,8 @@ class NavBar extends Component {
                             <img src={logo} alt="Тележная House"/>
                         </Link>
                         <button type="button" className="nav-btn" onClick={this.handleToggle}>
-                            <FaAlignRight className="nav-icon"/>
+                            {/*<FaAlignRight className="nav-icon"/>*/}
+                            <div className="contacts">БРОНИРОВАНИЕ</div>
                         </button>
                     </div>
                     <ul className={this.state.isOpen ? "nav-links show-nav" : "nav-links"}>
