@@ -7,11 +7,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import {RoomContext} from "../context";
 import {registerLocale} from "react-datepicker";
 import ru from 'date-fns/locale/ru';
+
 registerLocale('ru', ru)
 
 
 function Form() {
     const {rooms} = useContext(RoomContext)
+
     function numWord(value, words) {
         value = Math.abs(value) % 100;
         let num = value % 10;
@@ -36,15 +38,16 @@ function Form() {
     const [startDate, setStartDate] = useState(dateArrival);
     const [endDate, setEndDate] = useState(dateDeparture);
     nights = Math.round(Math.abs((startDate - endDate) / oneDay))
-
-    const [toSend, setToSend] = useState({
+    let initialState = {
         room_type: 'Номер-студия',
         room_quantity: '1',
         people_quantity: 'Гостей',
         name_comments: '',
         phone: '',
         email: '',
-    });
+    }
+
+    const [toSend, setToSend] = useState(initialState);
     // eslint-disable-next-line
     const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/g
     const onSubmit = (e) => {
@@ -66,7 +69,14 @@ function Form() {
                     )
                         .then((response) => {
                             swal("Ваша заявка принята, спасибо! " +
+                                `\n${message1+message2}\n` +
                                 "В ближайшее время с Вами свяжется наш сотрудник")
+                            setToSend(initialState)
+                            setStartDate(dateArrival)
+                            dateDeparture = new Date()
+                            dateDeparture = dateDeparture.setDate(dateDeparture.getDate() + 1)
+                            setEndDate(dateDeparture)
+                            nights = 1
                             console.log('SUCCESS!', response.status, response.text);
                         })
                         .catch((err) => {
@@ -148,13 +158,15 @@ function Form() {
                     </select>
                     <div className="d-flex">
                         <div style={{width: '600px'}} className="mx-2 text-center">Заезд
-                            <DatePicker dateFormat="dd/MM/yyyy" locale="ru" name="date_arrival" className="form-select my-2 text-center"
+                            <DatePicker dateFormat="dd/MM/yyyy" locale="ru" name="date_arrival"
+                                        className="form-select my-2 text-center"
                                         selected={startDate}
                                         value={toSend.date_arrival}
                                         onChange={(date) => setStartDate(date)}/>
                         </div>
                         <div style={{width: '600px'}} className="mx-2 text-center">Выезд
-                            <DatePicker dateFormat="dd/MM/yyyy" locale="ru" name="date_departure" className="form-select my-2 text-center"
+                            <DatePicker dateFormat="dd/MM/yyyy" locale="ru" name="date_departure"
+                                        className="form-select my-2 text-center"
                                         selected={endDate}
                                         value={toSend.date_departure}
                                         onChange={(date) => setEndDate(date)}/>
