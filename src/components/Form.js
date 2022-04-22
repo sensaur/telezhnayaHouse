@@ -69,7 +69,7 @@ function Form() {
                     )
                         .then((response) => {
                             swal("Ваша заявка принята, спасибо! " +
-                                `\n${message1+message2}\n` +
+                                `\n${message1 + message2}\n` +
                                 "В ближайшее время с Вами свяжется наш сотрудник")
                             setToSend(initialState)
                             setStartDate(dateArrival)
@@ -78,11 +78,25 @@ function Form() {
                             setEndDate(dateDeparture)
                             nights = 1
                             console.log('SUCCESS!', response.status, response.text);
-                        })
+                        }).then(
+
+                    )
                         .catch((err) => {
                             console.log('FAILED...', err);
                             swal("что-то пошло не так")
                         });
+        send(
+            process.env.REACT_APP_SERVICE_ID_2,
+            process.env.REACT_APP_TEMPLATE_ID_2,
+            {
+                ...toSend,
+                startDate: `${startDateTrimmed}`,
+                endDate: `${endDateTrimmed}`,
+                message: message1 + message2,
+                nights_quantity: `${nights}`
+            },
+            process.env.REACT_APP_USER_ID_2,
+        )
     };
 
     const handleChange = (e) => {
