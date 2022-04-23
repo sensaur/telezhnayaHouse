@@ -41,7 +41,7 @@ class NavBar extends Component {
                             </a>
                         </li>
                         <li>
-                            <a href="mailto:sneg.66s@mail.ru?Subject=Бронирование">
+                            <a href="mailto:telezhnayahouse@gmail.com?Subject=Бронирование">
                                 <FaEnvelope/>
                             </a>
                         </li>
