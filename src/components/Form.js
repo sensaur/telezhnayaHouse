@@ -52,9 +52,12 @@ function Form() {
     const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/g
     const onSubmit = (e) => {
         e.preventDefault();
-        (startDate.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) ? swal("Начало бронирования не может быть ранее текущей даты") :
+        (startDate.setHours(0, 0, 0, 0) <
+            new Date().setHours(0, 0, 0, 0))
+            ? swal("Начало бронирования не может быть ранее текущей даты") :
             !toSend.email ? swal("Пожалуйста введите адрес электронной почты") :
-                !regExp.test(toSend.phone) ? swal("Номер телефона введен некорректно. Пожалуйста введите номер в ином формате") :
+                !regExp.test(toSend.phone)
+                    ? swal("Номер телефона введен некорректно. Пожалуйста введите номер в ином формате") :
                     send(
                         process.env.REACT_APP_SERVICE_ID,
                         process.env.REACT_APP_TEMPLATE_ID,
@@ -122,7 +125,7 @@ function Form() {
             let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
             let total = price.reduce((a, b) => a + b, 0)
             let messageCount1 = `Ваше бронирование: ${toSend.room_quantity} ${numWord(toSend.room_quantity, ['номер', 'номера', 'номеров'])} "${toSend.room_type}"\n`
-                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ${numWord(nights, ['ночь', 'ночи', 'ночей'])}, тариф ${(total * toSend.room_quantity / 0.9).toLocaleString('ru')} руб.\n`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ${numWord(nights, ['ночь', 'ночи', 'ночей'])}, тариф ${((Math.ceil((total * toSend.room_quantity / 0.9)/100))*(100)).toLocaleString('ru')} руб.\n`
             let messageCount2 = `c учетом скидки "БРОНИРОВАНИЕ НА САЙТЕ" стоимость ${(total * toSend.room_quantity).toLocaleString('ru')} руб.`
             message1 = messageCount1
             message2 = messageCount2
@@ -132,7 +135,7 @@ function Form() {
             let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
             let total = price.reduce((a, b) => a + b, 0)
             let messageCount1 = `Ваше бронирование: ${toSend.room_quantity} ${numWord(toSend.room_quantity, ['номер', 'номера', 'номеров'])} "${toSend.room_type}"\n`
-                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ${numWord(nights, ['ночь', 'ночи', 'ночей'])}, тариф ${(total * toSend.room_quantity / 0.9).toLocaleString('ru')} руб.\n`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ${numWord(nights, ['ночь', 'ночи', 'ночей'])}, тариф ${((Math.ceil((total * toSend.room_quantity / 0.9)/100))*(100)).toLocaleString('ru')} руб.\n`
             let messageCount2 = `c учетом скидки "БРОНИРОВАНИЕ НА САЙТЕ" стоимость ${(total * toSend.room_quantity).toLocaleString('ru')} руб.`
             message1 = messageCount1
             message2 = messageCount2
@@ -141,7 +144,7 @@ function Form() {
             let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
             let total = price.reduce((a, b) => a + b, 0)
             let messageCount1 = `Ваше бронирование: ${toSend.room_quantity} ${numWord(toSend.room_quantity, ['номер', 'номера', 'номеров'])} "${toSend.room_type}"\n`
-                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ${numWord(nights, ['ночь', 'ночи', 'ночей'])}, тариф ${(total * toSend.room_quantity / 0.9).toLocaleString('ru')} руб.\n`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ${numWord(nights, ['ночь', 'ночи', 'ночей'])}, тариф ${((Math.ceil((total * toSend.room_quantity / 0.9)/100))*(100)).toLocaleString('ru')} руб.\n`
             let messageCount2 = `c учетом скидки "БРОНИРОВАНИЕ НА САЙТЕ" стоимость ${(total * toSend.room_quantity).toLocaleString('ru')} руб.`
             message1 = messageCount1
             message2 = messageCount2
