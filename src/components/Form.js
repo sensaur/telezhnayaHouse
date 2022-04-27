@@ -7,37 +7,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import {RoomContext} from "../context";
 import {registerLocale} from "react-datepicker";
 import ru from 'date-fns/locale/ru';
+import {numWord} from "./numWord";
 
 registerLocale('ru', ru)
 
-
 function Form() {
     const {rooms} = useContext(RoomContext)
-
-    function numWord(value, words) {
-        value = Math.abs(value) % 100;
-        let num = value % 10;
-        if (value > 10 && value < 20) return words[2];
-        if (num > 1 && num < 5) return words[1];
-        if (num === 1) return words[0];
-        return words[2];
-    }
-
     let nights = 1
-    const roomsQuantityArr = Array.from(Array(6).keys())
-    roomsQuantityArr.shift()
-    const nightsQuantityArr = Array.from(Array(15).keys())
-    nightsQuantityArr.shift()
-    const guestsQuantityArr = Array.from(Array(15).keys())
-    guestsQuantityArr[0] = 'Гостей'
-
-    let dateArrival = new Date();
-    let dateDeparture = new Date()
-    const oneDay = 24 * 60 * 60 * 1000;
-    dateDeparture = dateDeparture.setDate(dateDeparture.getDate() + 1)
-    const [startDate, setStartDate] = useState(dateArrival);
-    const [endDate, setEndDate] = useState(dateDeparture);
-    nights = Math.round(Math.abs((startDate - endDate) / oneDay))
+    const ONEDAY = 24 * 60 * 60 * 1000;
     let initialState = {
         room_type: 'Номер-студия',
         room_quantity: '1',
@@ -46,10 +23,32 @@ function Form() {
         phone: '',
         email: '',
     }
-
+    let dateArrival = new Date();
+    let dateDeparture = new Date()
     const [toSend, setToSend] = useState(initialState);
+    const [startDate, setStartDate] = useState(dateArrival);
+    dateDeparture = dateDeparture.setDate(startDate.getDate() + 1)
+    const [endDate, setEndDate] = useState(dateDeparture);
+
+    const roomsQuantityArr = Array.from(Array(6).keys())
+    roomsQuantityArr.shift()
+    const nightsQuantityArr = Array.from(Array(15).keys())
+    nightsQuantityArr.shift()
+    const guestsQuantityArr = Array.from(Array(15).keys())
+    guestsQuantityArr[0] = 'Гостей'
+
+
+    nights = Math.round(Math.abs((startDate - endDate) / ONEDAY))
+
     // eslint-disable-next-line
     const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/g
+
+    const setStartDateHandler = (date) => {
+        setStartDate(date)
+        let newEndDate = new Date(date);
+        newEndDate = newEndDate.setDate(date.getDate() + 1)
+        setEndDate(newEndDate)
+    }
     const onSubmit = (e) => {
         e.preventDefault();
         (startDate.setHours(0, 0, 0, 0) <
@@ -58,6 +57,9 @@ function Form() {
             !toSend.email ? swal("Пожалуйста введите адрес электронной почты") :
                 !regExp.test(toSend.phone)
                     ? swal("Номер телефона введен некорректно. Пожалуйста введите номер в ином формате") :
+                    (startDate.setHours(0, 0, 0, 0) >
+                        endDate.setHours(0, 0, 0, 0)) ?
+                        swal("Начало бронирования не может быть ранее конца бронирования") :
                     send(
                         process.env.REACT_APP_SERVICE_ID,
                         process.env.REACT_APP_TEMPLATE_ID,
@@ -125,7 +127,7 @@ function Form() {
             let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
             let total = price.reduce((a, b) => a + b, 0)
             let messageCount1 = `Ваше бронирование: ${toSend.room_quantity} ${numWord(toSend.room_quantity, ['номер', 'номера', 'номеров'])} "${toSend.room_type}"\n`
-                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ${numWord(nights, ['ночь', 'ночи', 'ночей'])}, тариф ${((Math.ceil((total * toSend.room_quantity / 0.9)/100))*(100)).toLocaleString('ru')} руб.\n`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ${numWord(nights, ['ночь', 'ночи', 'ночей'])}, тариф ${((Math.ceil((total * toSend.room_quantity / 0.9) / 100)) * (100)).toLocaleString('ru')} руб.\n`
             let messageCount2 = `c учетом скидки "БРОНИРОВАНИЕ НА САЙТЕ" стоимость ${(total * toSend.room_quantity).toLocaleString('ru')} руб.`
             message1 = messageCount1
             message2 = messageCount2
@@ -135,7 +137,7 @@ function Form() {
             let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
             let total = price.reduce((a, b) => a + b, 0)
             let messageCount1 = `Ваше бронирование: ${toSend.room_quantity} ${numWord(toSend.room_quantity, ['номер', 'номера', 'номеров'])} "${toSend.room_type}"\n`
-                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ${numWord(nights, ['ночь', 'ночи', 'ночей'])}, тариф ${((Math.ceil((total * toSend.room_quantity / 0.9)/100))*(100)).toLocaleString('ru')} руб.\n`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ${numWord(nights, ['ночь', 'ночи', 'ночей'])}, тариф ${((Math.ceil((total * toSend.room_quantity / 0.9) / 100)) * (100)).toLocaleString('ru')} руб.\n`
             let messageCount2 = `c учетом скидки "БРОНИРОВАНИЕ НА САЙТЕ" стоимость ${(total * toSend.room_quantity).toLocaleString('ru')} руб.`
             message1 = messageCount1
             message2 = messageCount2
@@ -144,7 +146,7 @@ function Form() {
             let price = datesFilled.map(el => priceList[`${el}`] ? priceList[`${el}`] : null)
             let total = price.reduce((a, b) => a + b, 0)
             let messageCount1 = `Ваше бронирование: ${toSend.room_quantity} ${numWord(toSend.room_quantity, ['номер', 'номера', 'номеров'])} "${toSend.room_type}"\n`
-                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ${numWord(nights, ['ночь', 'ночи', 'ночей'])}, тариф ${((Math.ceil((total * toSend.room_quantity / 0.9)/100))*(100)).toLocaleString('ru')} руб.\n`
+                + `c ${startDateTrimmed} по ${endDateTrimmed} на ${nights} ${numWord(nights, ['ночь', 'ночи', 'ночей'])}, тариф ${((Math.ceil((total * toSend.room_quantity / 0.9) / 100)) * (100)).toLocaleString('ru')} руб.\n`
             let messageCount2 = `c учетом скидки "БРОНИРОВАНИЕ НА САЙТЕ" стоимость ${(total * toSend.room_quantity).toLocaleString('ru')} руб.`
             message1 = messageCount1
             message2 = messageCount2
@@ -179,7 +181,7 @@ function Form() {
                                         className="form-select my-2 text-center"
                                         selected={startDate}
                                         value={toSend.date_arrival}
-                                        onChange={(date) => setStartDate(date)}/>
+                                        onChange={(date) => setStartDateHandler(date)}/>
                         </div>
                         <div style={{width: '600px'}} className="mx-2 text-center">Выезд
                             <DatePicker dateFormat="dd/MM/yyyy" locale="ru" name="date_departure"
