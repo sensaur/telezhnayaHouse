@@ -41,7 +41,7 @@ function Form() {
     nights = Math.round(Math.abs((startDate - endDate) / ONEDAY))
 
     // eslint-disable-next-line
-    const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/g
+    // const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/g
 
     const setStartDateHandler = (date) => {
         setStartDate(date)
@@ -50,16 +50,17 @@ function Form() {
         setEndDate(newEndDate)
     }
     const onSubmit = (e) => {
+        console.log(endDate)
         e.preventDefault();
-        (startDate.setHours(0, 0, 0, 0) <
-            new Date().setHours(0, 0, 0, 0))
-            ? swal("Начало бронирования не может быть ранее текущей даты") :
+        // (startDate.setHours(0, 0, 0, 0) <
+        //     new Date().setHours(0, 0, 0, 0))
+        //     ? swal("Начало бронирования не может быть ранее текущей даты") :
             !toSend.email ? swal("Пожалуйста введите адрес электронной почты") :
-                !regExp.test(toSend.phone)
-                    ? swal("Номер телефона введен некорректно. Пожалуйста введите номер в ином формате") :
-                    (startDate.setHours(0, 0, 0, 0) >
-                        endDate.setHours(0, 0, 0, 0)) ?
-                        swal("Начало бронирования не может быть ранее конца бронирования") :
+        //         !regExp.test(toSend.phone)
+        //             ? swal("Номер телефона введен некорректно. Пожалуйста введите номер в ином формате") :
+        //             (startDate.setHours(0, 0, 0, 0) >
+        //                 endDate.setHours(0, 0, 0, 0)) ?
+        //                 swal("Начало бронирования не может быть ранее конца бронирования") :
                     send(
                         process.env.REACT_APP_SERVICE_ID,
                         process.env.REACT_APP_TEMPLATE_ID,
