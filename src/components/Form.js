@@ -7,7 +7,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import {RoomContext} from "../context";
 import {registerLocale} from "react-datepicker";
 import ru from 'date-fns/locale/ru';
-import {numWord} from "./numWord";
+import {numWord} from "../helpers/numWord";
+import {isInvalid, isInvalidInterval, isInvalidPhone} from "../helpers/isInvalid";
 
 registerLocale('ru', ru)
 
@@ -27,7 +28,7 @@ function Form() {
     let dateDeparture = new Date()
     const [toSend, setToSend] = useState(initialState);
     const [startDate, setStartDate] = useState(dateArrival);
-    dateDeparture = dateDeparture.setDate(startDate.getDate() + 1)
+    dateDeparture = new Date((dateDeparture.setDate(startDate.getDate() + 1)))
     const [endDate, setEndDate] = useState(dateDeparture);
 
     const roomsQuantityArr = Array.from(Array(6).keys())
@@ -36,73 +37,61 @@ function Form() {
     nightsQuantityArr.shift()
     const guestsQuantityArr = Array.from(Array(15).keys())
     guestsQuantityArr[0] = 'Гостей'
-
-
     nights = Math.round(Math.abs((startDate - endDate) / ONEDAY))
-
-    // eslint-disable-next-line
-    // const regExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/g
-
     const setStartDateHandler = (date) => {
         setStartDate(date)
         let newEndDate = new Date(date);
-        newEndDate = newEndDate.setDate(date.getDate() + 1)
+        newEndDate = new Date(newEndDate.setDate(date.getDate() + 1))
         setEndDate(newEndDate)
     }
     const onSubmit = (e) => {
-        console.log(endDate)
         e.preventDefault();
-        // (startDate.setHours(0, 0, 0, 0) <
-        //     new Date().setHours(0, 0, 0, 0))
-        //     ? swal("Начало бронирования не может быть ранее текущей даты") :
-            !toSend.email ? swal("Пожалуйста введите адрес электронной почты") :
-        //         !regExp.test(toSend.phone)
-        //             ? swal("Номер телефона введен некорректно. Пожалуйста введите номер в ином формате") :
-        //             (startDate.setHours(0, 0, 0, 0) >
-        //                 endDate.setHours(0, 0, 0, 0)) ?
-        //                 swal("Начало бронирования не может быть ранее конца бронирования") :
-                    send(
-                        process.env.REACT_APP_SERVICE_ID,
-                        process.env.REACT_APP_TEMPLATE_ID,
-                        {
-                            ...toSend,
-                            startDate: `${startDateTrimmed}`,
-                            endDate: `${endDateTrimmed}`,
-                            message: message1 + message2,
-                            nights_quantity: `${nights}`
-                        },
-                        process.env.REACT_APP_USER_ID,
-                    )
-                        .then((response) => {
-                            swal("Ваша заявка принята, спасибо! " +
-                                `\n${message1 + message2}\n` +
-                                "В ближайшее время с Вами свяжется наш сотрудник")
-                            setToSend(initialState)
-                            setStartDate(dateArrival)
-                            dateDeparture = new Date()
-                            dateDeparture = dateDeparture.setDate(dateDeparture.getDate() + 1)
-                            setEndDate(dateDeparture)
-                            nights = 1
-                            console.log('SUCCESS!', response.status, response.text);
-                        }).then(
+        isInvalid(startDate) ? swal("Начало бронирования не может быть ранее текущей даты") :
+            isInvalidInterval(startDate, endDate) ? swal("Начало бронирования не может быть ранее конца бронирования") :
+                !toSend.email ? swal("Пожалуйста введите адрес электронной почты") :
+                    isInvalidPhone(toSend.phone) ? swal("Номер телефона введен некорректно. Пожалуйста введите номер в ином формате") :
+                        send(
+                            process.env.REACT_APP_SERVICE_ID,
+                            process.env.REACT_APP_TEMPLATE_ID,
+                            {
+                                ...toSend,
+                                startDate: `${startDateTrimmed}`,
+                                endDate: `${endDateTrimmed}`,
+                                message: message1 + message2,
+                                nights_quantity: `${nights}`
+                            },
+                            process.env.REACT_APP_USER_ID,
+                        )
+                            .then((response) => {
+                                swal("Ваша заявка принята, спасибо! " +
+                                    `\n${message1 + message2}\n` +
+                                    "В ближайшее время с Вами свяжется наш сотрудник")
+                                setToSend(initialState)
+                                setStartDate(dateArrival)
+                                dateDeparture = new Date()
+                                dateDeparture = dateDeparture.setDate(dateDeparture.getDate() + 1)
+                                setEndDate(dateDeparture)
+                                nights = 1
+                                console.log('SUCCESS!', response.status, response.text);
+                            }).then(
 
-                    )
-                        .catch((err) => {
-                            console.log('FAILED...', err);
-                            swal("что-то пошло не так")
-                        });
-        send(
-            process.env.REACT_APP_SERVICE_ID_2,
-            process.env.REACT_APP_TEMPLATE_ID_2,
-            {
-                ...toSend,
-                startDate: `${startDateTrimmed}`,
-                endDate: `${endDateTrimmed}`,
-                message: message1 + message2,
-                nights_quantity: `${nights}`
-            },
-            process.env.REACT_APP_USER_ID_2,
-        )
+                        )
+                            .catch((err) => {
+                                console.log('FAILED...', err);
+                                swal("что-то пошло не так")
+                            });
+            send(
+                process.env.REACT_APP_SERVICE_ID_2,
+                process.env.REACT_APP_TEMPLATE_ID_2,
+                {
+                    ...toSend,
+                    startDate: `${startDateTrimmed}`,
+                    endDate: `${endDateTrimmed}`,
+                    message: message1 + message2,
+                    nights_quantity: `${nights}`
+                },
+                process.env.REACT_APP_USER_ID_2,
+            )
     };
 
     const handleChange = (e) => {
@@ -117,7 +106,6 @@ function Form() {
             return moment(fullDate).format("DD/MM/YYYY")
         }
     )
-    // console.log("datesFilled", datesFilled)
     let message1 = 'Выберите параметры и мы рассчитаем стоимость'
     let message2 = ''
     if (toSend.room_type === "Тип комнаты" || toSend.room_quantity === "Количество номеров") {
@@ -208,7 +196,8 @@ function Form() {
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="exampleFormControlTextarea1" className="form-label">Имя / комментарии</label>
+                        <label htmlFor="exampleFormControlTextarea1" className="form-label">Имя /
+                            комментарии</label>
                         <textarea name="name_comments" className="form-control" id="exampleFormControlTextarea1"
                                   rows="3"
                                   value={toSend.name_comments}
