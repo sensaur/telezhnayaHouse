@@ -17,7 +17,7 @@ function Form() {
     let nights = 1
     const ONEDAY = 24 * 60 * 60 * 1000;
     let initialState = {
-        room_type: 'Номер-студия',
+        room_type: 'Апартаменты-студия',
         room_quantity: '1',
         people_quantity: 'Гостей',
         name_comments: '',
