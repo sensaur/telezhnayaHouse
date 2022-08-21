@@ -1,4 +1,4 @@
-Web site for Hotel in Saint Petersburg
+<a href="https://www.telezhnaya.com/" target="_blank">Web site for Hotel in Saint Petersburg</a>
 
 The project uses React router for routing,
 React context API for state management, 
